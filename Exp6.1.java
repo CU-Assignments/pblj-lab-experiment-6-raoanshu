@@ -1,28 +1,86 @@
-To implement a Java program that sorts a list of Employee objects (based on name, age, and salary) using lambda expressions and stream operations to demonstrate efficient data processing.
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-Step 1: Create the Employee Class
--Define an Employee class with the following attributes:
-  name (String)
-  age (int)
-  salary (double)
--Create a constructor to initialize these values.
--Implement a display() method to print employee details.
-  
-Step 2: Create the Main Class
--Initialize an ArrayList<Employee> and add sample employee data.
--Use lambda expressions to sort the list:
-  Sort by Name (Alphabetical order)
-  Sort by Age (Ascending order)
-  Sort by Salary (Descending order)
-  
-Step 3: Display the Sorted List
-Use forEach() with a method reference to print the sorted employees.
+// Class to represent an Employee
+class Employee {
+    private String name;
+    private int age;
+    private double salary;
 
+    public Employee(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
 
-Test Cases
-Test Case         	Input Data                                                      	                    Expected Output
-Case 1:       Sorting by Name	Alice (30, 50000), Bob (25, 60000), Charlie (35, 55000)	                    Alice, Bob, Charlie (sorted alphabetically)
-Case 2:       Sorting by Age	Alice (30, 50000), Bob (25, 60000), Charlie (35, 55000)	                    Bob, Alice, Charlie (sorted by age in ascending order)
-Case 3:       Sorting by Salary	Alice (30, 50000), Bob (25, 60000), Charlie (35, 55000)              	    Bob, Charlie, Alice (sorted by salary in descending order)
-Case 4:       Edge Case - Same Name, Different Age	Alex (28, 45000), Alex (32, 47000), Alex (25, 46000)	Sorted by age (25 → 28 → 32)
-Case 5:       Edge Case - Same Salary	David (29, 50000), Eve (31, 50000), Frank (27, 50000)	              Sorted by name if salary is the same
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                '}';
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a list of Employee objects
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("Alice", 30, 50000.0));
+        employees.add(new Employee("Bob", 25, 60000.0));
+        employees.add(new Employee("Charlie", 35, 70000.0));
+        employees.add(new Employee("David", 25, 55000.0));
+        employees.add(new Employee("Eve", 30, 48000.0));
+
+        System.out.println("Initial list of employees:");
+        for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+
+        // Sort by name using a lambda expression
+        Collections.sort(employees, (e1, e2) -> e1.getName().compareTo(e2.getName()));
+        System.out.println("\nSorted by name:");
+        for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+
+        // Sort by age using a lambda expression
+        Collections.sort(employees, (e1, e2) -> Integer.compare(e1.getAge(), e2.getAge()));
+        System.out.println("\nSorted by age:");
+        for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+
+        // Sort by salary using a lambda expression
+        Collections.sort(employees, (e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary()));
+        System.out.println("\nSorted by salary:");
+        for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+        
+        // Example of using comparing and thenComparing for multiple conditions
+        System.out.println("\nSorted by age, then by name:");
+        employees.sort(
+            java.util.Comparator.comparing(Employee::getAge) // First sort by age
+            .thenComparing(Employee::getName)       // Then sort by name
+        );
+         for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+    }
+}
+
